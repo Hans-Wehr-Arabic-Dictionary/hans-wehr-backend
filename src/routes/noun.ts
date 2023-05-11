@@ -7,31 +7,8 @@ const RESPONSE_VERS = "1.0";
 // This is the router for the noun route
 export const router = express.Router();
 
-async function retrieveNoun(word) {
-  const params = {
-    ExpressionAttributeValues: {
-      ":query_word": word,
-      ":is_root": 0,
-    },
-    IndexName: "WordsIndex",
-    KeyConditionExpression: "Word = :query_word AND IsRoot = :is_root",
-    TableName: "hans_wehr_DB",
-  };
-
-  const response = await ddbDocClient.send(new QueryCommand(params));
-  console.log(response.$metadata.httpStatusCode);
-
-  if (response.$metadata.httpStatusCode != 200) {
-    // error connecting to DB
-    return "Error connecting to DB";
-  }
-
-  if (response.Count == 0) {
-    // no results
-    return "No results for " + word;
-  }
-
-  return response.Items;
+async function retrieveNoun(word : string) {
+  return
 }
 
 // app.get("/noun", (req, res) => {
