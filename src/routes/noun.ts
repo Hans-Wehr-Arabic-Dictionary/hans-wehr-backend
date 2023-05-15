@@ -1,6 +1,6 @@
-const express = require("express");
-const logger = require("../utils/logger");
-const { lookupRoot } = require("../utils/db");
+import express from "express";
+import { logger } from "../utils/logger";
+import { lookupRoot } from "../utils/db";
 
 const RESPONSE_VERS = "1.0";
 

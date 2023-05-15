@@ -2,52 +2,25 @@ import express from "express";
 import https from "https";
 import fs from "fs";
 import http from "http";
+import NOTFOUND from "dns";
+import swaggerUi from "swagger-ui-express";
 import { logger } from "./utils/logger";
 import { initDB } from "./utils/db";
 import { rootHandler } from "./routes/root";
 import { nounHandler }  from "./routes/noun";
+import { feedbackHandler }  from "./routes/feedback";
+import { specs } from "./utils/swagger-api";
 
 const app = express();
 
 const PORT = process.env.PORT || 8080,
   LOCAL = process.env.LOCAL || 0;
 
-const swaggerJsdoc = require("swagger-jsdoc"),
-  swaggerUi = require("swagger-ui-express");
-
 var bodyParser = require("body-parser");
 
-// Routes
-
-const options = {
-  definition: {
-    swagger: "2.0",
-    info: {
-      title: "Hans Wehr DB API",
-      version: "0.1.0",
-      description:
-        "This is an API used to query the Hans Wehr dictionary database.",
-      contact: {
-        name: "Manaf Asif",
-        url: "https://manaf.info",
-        email: "manaf.asif12@gmail.com",
-      },
-    },
-    servers: [
-      {
-        url: "http://localhost:8080",
-      },
-    ],
-  },
-  apis: ["./routes/*.js"],
-};
-
-logger.log("info", "API Initialized");
-
-const specs = swaggerJsdoc(options);
+logger.info("API Initialized");
 
 var cors = require("cors");
-const { NOTFOUND } = require("dns");
 app.use(
   cors({
     origin: "*",
@@ -57,33 +30,36 @@ app.use(
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-app.use((req, res, next) => {
+app.use((_req, _res, next) => {
   console.log("Time:", Date.now());
   next();
 });
 
-app.get("/", (request, response) => {
-  logger.log("info", "Received GET Request to / endpoint");
-  response.send("مرحبا");
+app.get("/", (_req, res) => {
+  logger.info("Received GET Request to / endpoint");
+  res.send("مرحبا");
 });
 
 app.use(bodyParser.json());
-
 app.use("/root", rootHandler);
 app.use("/noun", nounHandler);
+app.use("/feedback", feedbackHandler);
+
+logger.info("routes added");
 
 initDB()
   .then((database) => {
+    logger.info("Database Initialized");
     startListening();
   })
   .catch((err) => {
-    console.error("Error connecting to the database:", err);
+    logger.error("Error connecting to the database", err);
   });
 
 function startListening() {
   if (LOCAL) {
     app.listen(PORT, () => {
-      console.log(`API listening port ${PORT}...`);
+      logger.info(`API listening port ${PORT}...`);
     });
   } else {
     const httpServer = http.createServer(app);
@@ -108,3 +84,4 @@ function startListening() {
     });
   }
 }
+
