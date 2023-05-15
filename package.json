@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc --project ./",
     "deploy": "node dist/app.js",
+    "deployHTTP": "cross-env HTTP=1 node dist/app.js",
+    "start" : "cross-env LOCAL=1 node dist/app.js",
     "dev": "cross-env LOCAL=1 nodemon src/app.ts"
   },
   "dependencies": {
