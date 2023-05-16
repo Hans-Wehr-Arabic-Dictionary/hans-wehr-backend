@@ -54,6 +54,8 @@ jobs:
             git fetch --all &&
             git reset --hard origin/master &&
             git pull origin master &&
+            echo "DB_USERNAME=${{ secrets.API_DB_USERNAME  }}" >> .env && 
+            echo "DB_PASSWORD=${{ secrets.API_DB_PASSWORD  }}" >> .env &&
             docker-compose build && docker-compose up -d
             '
   # deploy:
