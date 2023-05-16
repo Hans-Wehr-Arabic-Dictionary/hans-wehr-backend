@@ -84,10 +84,10 @@ function initializeHTTP() {
 
 // initializes the HTTPS server
 function initializeHTTPS() {
-  const HTTPS_CERT = fs.readFileSync(
+  const HTTPS_KEY = fs.readFileSync(
     "./privkey.pem"
   )
-  const HTTPS_KEY = fs.readFileSync(
+  const HTTPS_CERT = fs.readFileSync(
     "./fullchain.pem"
   )
   // if (!HTTPS_CERT || !HTTPS_KEY) {
