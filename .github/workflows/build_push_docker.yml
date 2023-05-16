@@ -4,7 +4,7 @@ on:
   release:
     push:
       branches:
-        - "main"
+        - "master"
     # types: [published] # , created, edited
 
 jobs:
