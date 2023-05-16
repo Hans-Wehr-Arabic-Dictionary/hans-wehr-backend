@@ -41,3 +41,19 @@ export async function lookupRoot(root: string) {
   // perform the lookup
   return collection.find({ root: root }).hint("rootsIndex");
 }
+
+export async function insertFeedback(feedback: any) {
+  let collection = db.collection("feedback");
+  let name = null;
+  let email = null;
+
+  if("name" in feedback) {
+    name = feedback["name"];
+  }
+
+  if("email" in feedback) {
+    email = feedback["email"];
+  }
+
+  return collection.insertOne({"name" : feedback["name"], "email" : email, "root": feedback["root"], "message" : feedback["message"]})
+}
