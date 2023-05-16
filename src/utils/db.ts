@@ -6,18 +6,20 @@ import { Db } from 'mongodb';
 
 dotenv.config();
 
+const LOCAL = process.env.LOCAL || 0;
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
+const url = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@hans-wehr.ujhfadm.mongodb.net/`;
+
 if (!DB_USERNAME || !DB_PASSWORD) {
   logger.error("Error: No DB Credentials");
   throw new Error("Error: No DB Credentials found. Check the .env file");
-
 }
 
-const url = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@hans-wehr.ujhfadm.mongodb.net/`;
-
 // Database Name
-const dbName = "hans_wehr";
+const dbName = LOCAL ?  "hans_wehr_dev" : "hans_wehr";
+logger.info("using database " + dbName)
+
 
 let db: Db;
 
@@ -25,17 +27,33 @@ export async function initDB() {
   try {
     let client = await MongoClient.connect(url);
     db = client.db(dbName);
-    logger.debug("Successfully connected to MongoDB");
+    logger.info("Successfully connected to MongoDB");
     return db;
   } catch (err) {
-    console.error(err);
+    logger.error(err);
   } // catch any mongo error here
 }
 
-export async function lookupRoot(root : string) {
+export async function lookupRoot(root: string) {
   // connect to the collection
-  let collection = await db.collection("definitions");
+  let collection = db.collection("definitions");
 
   // perform the lookup
   return collection.find({ root: root }).hint("rootsIndex");
+}
+
+export async function insertFeedback(feedback: any) {
+  let collection = db.collection("feedback");
+  let name = null;
+  let email = null;
+
+  if("name" in feedback) {
+    name = feedback["name"];
+  }
+
+  if("email" in feedback) {
+    email = feedback["email"];
+  }
+
+  return collection.insertOne({"name" : feedback["name"], "email" : email, "root": feedback["root"], "message" : feedback["message"]})
 }

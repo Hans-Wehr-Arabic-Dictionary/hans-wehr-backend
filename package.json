@@ -8,7 +8,7 @@
     "deploy": "node dist/app.js",
     "deployHTTP": "tsc --project ./ && cross-env HTTP=1 node dist/app.js",
     "deployHTTPS": "tsc --project ./ && node dist/app.js",
-    "start" : "cross-env LOCAL=1 node dist/app.js",
+    "start": "cross-env LOCAL=1 node dist/app.js",
     "dev": "cross-env LOCAL=1 nodemon src/app.ts"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "winston-loggly-bulk": "^3.2.1"
   },
   "devDependencies": {
+    "@aws-sdk/types": "^3.329.0",
     "@types/express": "^4.17.17",
     "@types/node": "^20.1.2",
     "@types/swagger-jsdoc": "^6.0.1",
