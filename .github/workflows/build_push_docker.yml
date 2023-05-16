@@ -53,10 +53,10 @@ jobs:
             git fetch --all &&
             git reset --hard origin/master &&
             git pull origin master &&
-            echo "DB_USERNAME=${{ secrets.API_DB_USERNAME  }}" >> .env && 
-            echo "DB_PASSWORD=${{ secrets.API_DB_PASSWORD  }}" >> .env &&
-            echo "${{ secrets.API_HTTPS_KEY  }}" >> privkey.pem &&
-            echo "${{ secrets.API_HTTPS_CERT  }}" >> fullchain.pem &&
+            echo "DB_USERNAME=${{ secrets.API_DB_USERNAME  }}" > .env && 
+            echo "DB_PASSWORD=${{ secrets.API_DB_PASSWORD  }}" > .env &&
+            echo "${{ secrets.API_HTTPS_KEY  }}" > privkey.pem &&
+            echo "${{ secrets.API_HTTPS_CERT  }}" > fullchain.pem &&
             docker-compose build && docker-compose up -d
             '
   # deploy:
