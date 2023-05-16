@@ -67,6 +67,7 @@ function startListening() {
     initializeHTTP();
   }
   else {
+    console.log("Trying to run HTTP and HTTPS Server")
     initializeHTTP();
     initializeHTTPS();
 
@@ -105,6 +106,8 @@ function initializeHTTPS() {
     // },
     app
   );
+
+  console.log("Created HTTPS Server")
 
   httpsServer.listen(443, () => {
     console.log("HTTPS Server running on port 443");
