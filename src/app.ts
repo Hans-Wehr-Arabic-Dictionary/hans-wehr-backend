@@ -88,8 +88,11 @@ function initializeHTTPS() {
   const HTTPS_KEY = process.env.HTTPS_KEY
   if (!HTTPS_CERT || !HTTPS_KEY) {
     logger.error("Error: Missing HTTPS Credentials")
+    console.log("Error: Missing HTTPS Credentials")
     throw new Error("Error: Missing HTTPS Credentials")
   }
+
+  console.log("About to create HTTPS server")
 
   const httpsServer = https.createServer(
     {
