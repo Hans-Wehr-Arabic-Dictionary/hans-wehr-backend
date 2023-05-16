@@ -573,6 +573,13 @@
   dependencies:
     tslib "^2.5.0"
 
+"@aws-sdk/types@^3.329.0":
+  version "3.329.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.329.0.tgz#bc20659abfcd666954196c3a24ad47785db80dd3"
+  integrity sha512-wFBW4yciDfzQBSFmWNaEvHShnSGLMxSu9Lls6EUf6xDMavxSB36bsrVRX6CyAo/W0NeIIyEOW1LclGPgJV1okg==
+  dependencies:
+    tslib "^2.5.0"
+
 "@aws-sdk/url-parser@3.162.0":
   version "3.162.0"
   resolved "https://registry.npmjs.org/@aws-sdk/url-parser/-/url-parser-3.162.0.tgz"

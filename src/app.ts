@@ -50,7 +50,7 @@ app.use("/feedback", feedbackHandler);
 logger.info("routes added");
 
 initDB()
-  .then((database) => {
+  .then((_database) => {
     logger.info("Database Initialized");
     startListening();
   })
