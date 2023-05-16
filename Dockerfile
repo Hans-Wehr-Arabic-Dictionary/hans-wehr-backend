@@ -13,7 +13,7 @@ RUN yarn install --immutable --immutable-cache
 # Bundle app source
 COPY . .
 
-EXPOSE 80
+EXPOSE 80 443
 
 CMD [ "yarn", "run", "deployHTTPS" ]
 
