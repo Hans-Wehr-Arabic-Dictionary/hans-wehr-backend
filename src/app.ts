@@ -84,31 +84,35 @@ function initializeHTTP() {
 
 // initializes the HTTPS server
 function initializeHTTPS() {
-  const HTTPS_CERT = process.env.HTTPS_CERT
-  const HTTPS_KEY = process.env.HTTPS_KEY
-  if (!HTTPS_CERT || !HTTPS_KEY) {
-    logger.error("Error: Missing HTTPS Credentials")
-    console.log("Error: Missing HTTPS Credentials")
-    throw new Error("Error: Missing HTTPS Credentials")
-  }
+  const HTTPS_CERT = fs.readFileSync(
+    "/privkey.pem"
+  )
+  const HTTPS_KEY = fs.readFileSync(
+    "/etc/letsencrypt/live/api.hanswehr.com/fullchain.pem"
+  )
+  // if (!HTTPS_CERT || !HTTPS_KEY) {
+  //   logger.error("Error: Missing HTTPS Credentials")
+  //   console.log("Error: Missing HTTPS Credentials")
+  //   throw new Error("Error: Missing HTTPS Credentials")
+  // }
 
   console.log("About to create HTTPS server")
   console.log(HTTPS_KEY)
   console.log(HTTPS_CERT)
 
   const httpsServer = https.createServer(
-    {
-      key: HTTPS_KEY,
-      cert: HTTPS_CERT
-    },
     // {
-    //   key: fs.readFileSync(
-    //     "/etc/letsencrypt/live/api.hanswehr.com/privkey.pem"
-    //   ),
-    //   cert: fs.readFileSync(
-    //     "/etc/letsencrypt/live/api.hanswehr.com/fullchain.pem"
-    //   ),
+    //   key: HTTPS_KEY,
+    //   cert: HTTPS_CERT
     // },
+    {
+      key: fs.readFileSync(
+        "/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/fullchain.pem"
+      ),
+    },
     app
   );
 
