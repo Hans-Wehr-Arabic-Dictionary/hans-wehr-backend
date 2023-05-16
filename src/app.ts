@@ -41,10 +41,6 @@ app.get("/", (_req, res) => {
   res.send("مرحبا");
 });
 
-app.get("/kill", (_req, res) => {
-  res.send("killing api");
-  throw new Error('Ordered to kill api');
-});
 
 app.use(bodyParser.json());
 app.use("/root", rootHandler);
@@ -87,15 +83,26 @@ function initializeHTTP() {
 
 // initializes the HTTPS server
 function initializeHTTPS() {
+  const HTTPS_CERT = process.env.HTTPS_CERT
+  const HTTPS_KEY = process.env.HTTPS_KEY
+  if (!HTTPS_CERT || !HTTPS_KEY) {
+    logger.error("Error: Missing HTTPS Credentials")
+    throw new Error("Error: Missing HTTPS Credentials")
+  }
+
   const httpsServer = https.createServer(
     {
-      key: fs.readFileSync(
-        "/etc/letsencrypt/live/api.hanswehr.com/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/etc/letsencrypt/live/api.hanswehr.com/fullchain.pem"
-      ),
+      key: HTTPS_KEY,
+      cert: HTTPS_CERT
     },
+    // {
+    //   key: fs.readFileSync(
+    //     "/etc/letsencrypt/live/api.hanswehr.com/privkey.pem"
+    //   ),
+    //   cert: fs.readFileSync(
+    //     "/etc/letsencrypt/live/api.hanswehr.com/fullchain.pem"
+    //   ),
+    // },
     app
   );
 
