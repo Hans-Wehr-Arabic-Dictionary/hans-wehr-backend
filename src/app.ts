@@ -93,6 +93,8 @@ function initializeHTTPS() {
   }
 
   console.log("About to create HTTPS server")
+  console.log(HTTPS_KEY)
+  console.log(HTTPS_CERT)
 
   const httpsServer = https.createServer(
     {
