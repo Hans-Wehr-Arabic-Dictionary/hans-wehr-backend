@@ -85,10 +85,10 @@ function initializeHTTP() {
 // initializes the HTTPS server
 function initializeHTTPS() {
   const HTTPS_CERT = fs.readFileSync(
-    "/privkey.pem"
+    "./privkey.pem"
   )
   const HTTPS_KEY = fs.readFileSync(
-    "/fullchain.pem"
+    "./fullchain.pem"
   )
   // if (!HTTPS_CERT || !HTTPS_KEY) {
   //   logger.error("Error: Missing HTTPS Credentials")
@@ -97,8 +97,8 @@ function initializeHTTPS() {
   // }
 
   console.log("About to create HTTPS server")
-  console.log(HTTPS_KEY)
-  console.log(HTTPS_CERT)
+  console.log("HTTPS KEY: " + HTTPS_KEY)
+  console.log("HTTPS CERT: " + HTTPS_CERT)
 
   const httpsServer = https.createServer(
     // {
