@@ -88,7 +88,7 @@ function initializeHTTPS() {
     "/privkey.pem"
   )
   const HTTPS_KEY = fs.readFileSync(
-    "/etc/letsencrypt/live/api.hanswehr.com/fullchain.pem"
+    "/fullchain.pem"
   )
   // if (!HTTPS_CERT || !HTTPS_KEY) {
   //   logger.error("Error: Missing HTTPS Credentials")
