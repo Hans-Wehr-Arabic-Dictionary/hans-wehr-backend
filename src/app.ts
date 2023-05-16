@@ -41,6 +41,11 @@ app.get("/", (_req, res) => {
   res.send("مرحبا");
 });
 
+app.get("/kill", (_req, res) => {
+  res.send("killing api");
+  throw new Error('Ordered to kill api');
+});
+
 app.use(bodyParser.json());
 app.use("/root", rootHandler);
 app.use("/noun", nounHandler);
