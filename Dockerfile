@@ -15,6 +15,7 @@ COPY . .
 
 EXPOSE 80
 
+# 
 CMD [ "yarn", "run", "build" ]
 CMD [ "yarn", "run", "deployHTTP" ]
 
