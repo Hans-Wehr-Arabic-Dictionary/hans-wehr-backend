@@ -20,16 +20,51 @@ jobs:
   #         tag_with_ref: true # Info: https://github.com/docker/build-push-action/tree/releases/v1#tag_with_ref
   #         tag_with_sha: true # Info: https://github.com/docker/build-push-action/tree/releases/v1#tag_with_sha
   #         tags: latest
-
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: alex-ac/github-action-ssh-docker-compose@master
-        name: Docker-Stack Remote Deployment
-        with:
-          ssh_host: ec2-54-226-180-50.compute-1.amazonaws.com
-          ssh_private_key: ${{ secrets.API_SSH_PRIVATE_KEY }}
-          ssh_user: ubuntu
-          docker_compose_prefix: hans-wehr
-          use_stack: "true"
+      - uses: actions/checkout@v2
+
+      - name: Build the docker_compose
+        run: docker-compose build
+
+    # - name: Build the application
+    #   run: docker-compose exec -T counter_app npm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy in EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.API_SSH_PRIVATE_KEY  }}
+          HOSTNAME: ec2-54-226-180-50.compute-1.amazonaws.com
+          USER_NAME: ubuntu
+
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+            #Now we have got the access of EC2 and we will start the deploy .
+            cd /home/ubuntu/CounterApp &&
+            git checkout master &&
+            git fetch --all &&
+            git reset --hard origin/master &&
+            git pull origin master &&
+            docker-compose build && docker-compose up -d
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - uses: alex-ac/github-action-ssh-docker-compose@master
+  #       name: Docker-Stack Remote Deployment
+  #       with:
+  #         ssh_host: ec2-54-226-180-50.compute-1.amazonaws.com
+  #         ssh_private_key: ${{ secrets.API_SSH_PRIVATE_KEY }}
+  #         ssh_user: ubuntu
+  #         docker_compose_prefix: hans-wehr
+  #         use_stack: "true"
