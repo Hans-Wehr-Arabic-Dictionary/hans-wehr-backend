@@ -7,6 +7,7 @@ import { Db } from 'mongodb';
 dotenv.config();
 
 const LOCAL = process.env.LOCAL || 0;
+const LOCAL_DB = process.env.LOCAL_DB || 0;
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const url = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@hans-wehr.ujhfadm.mongodb.net/`;
@@ -17,7 +18,7 @@ if (!DB_USERNAME || !DB_PASSWORD) {
 }
 
 // Database Name
-const dbName = LOCAL ?  "hans_wehr_dev" : "hans_wehr";
+const dbName = LOCAL_DB ? "hans_wehr_dev" : "hans_wehr";
 logger.info("using database " + dbName)
 
 
@@ -47,13 +48,13 @@ export async function insertFeedback(feedback: any) {
   let name = null;
   let email = null;
 
-  if("name" in feedback) {
+  if ("name" in feedback) {
     name = feedback["name"];
   }
 
-  if("email" in feedback) {
+  if ("email" in feedback) {
     email = feedback["email"];
   }
 
-  return collection.insertOne({"name" : feedback["name"], "email" : email, "root": feedback["root"], "message" : feedback["message"]})
+  return collection.insertOne({ "name": feedback["name"], "email": email, "root": feedback["root"], "message": feedback["message"] })
 }

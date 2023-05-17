@@ -85,10 +85,10 @@ function initializeHTTP() {
 // initializes the HTTPS server
 function initializeHTTPS() {
   const HTTPS_KEY = fs.readFileSync(
-    "./privkey.pem"
+    "privkey.pem"
   )
   const HTTPS_CERT = fs.readFileSync(
-    "./fullchain.pem"
+    "fullchain.pem"
   )
   // if (!HTTPS_CERT || !HTTPS_KEY) {
   //   logger.error("Error: Missing HTTPS Credentials")
@@ -100,25 +100,33 @@ function initializeHTTPS() {
   console.log("HTTPS KEY: " + HTTPS_KEY)
   console.log("HTTPS CERT: " + HTTPS_CERT)
 
-  const httpsServer = https.createServer(
-    // {
-    //   key: HTTPS_KEY,
-    //   cert: HTTPS_CERT
-    // },
-    {
-      key: fs.readFileSync(
-        "/privkey.pem"
-      ),
-      cert: fs.readFileSync(
-        "/fullchain.pem"
-      ),
-    },
-    app
-  );
+  try {
+    const httpsServer = https.createServer(
+      // {
+      //   key: HTTPS_KEY,
+      //   cert: HTTPS_CERT
+      // },
+      {
+        key: fs.readFileSync(
+          "./privkey.pem"
+        ),
+        cert: fs.readFileSync(
+          "./fullchain.pem"
+        ),
+      },
+      app
+    );
 
-  console.log("Created HTTPS Server")
+    console.log("Created HTTPS Server")
 
-  httpsServer.listen(443, () => {
-    console.log("HTTPS Server running on port 443");
-  });
+    httpsServer.listen(443, () => {
+      console.log("HTTPS Server running on port 443");
+    });
+  } catch (err) {
+    console.error(err);
+  }
+
+
+
+
 }

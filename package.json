@@ -9,7 +9,8 @@
     "deployHTTP": "tsc --project ./ && cross-env HTTP=1 node dist/app.js",
     "deployHTTPS": "tsc --project ./ && node dist/app.js",
     "start": "cross-env LOCAL=1 node dist/app.js",
-    "dev": "cross-env LOCAL=1 nodemon src/app.ts"
+    "dev": "cross-env LOCAL=1 LOCAL_DB=1 nodemon src/app.ts",
+    "dev_cloud_DB": "cross-env LOCAL=1 nodemon src/app.ts"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.165.0",
