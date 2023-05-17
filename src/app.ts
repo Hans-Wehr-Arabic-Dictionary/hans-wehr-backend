@@ -10,6 +10,7 @@ import { rootHandler } from "./routes/root";
 import { nounHandler } from "./routes/noun";
 import { feedbackHandler } from "./routes/feedback";
 import { specs } from "./utils/swagger-api";
+import { authHandler } from "./routes/auth";
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use(bodyParser.json());
 app.use("/root", rootHandler);
 app.use("/noun", nounHandler);
 app.use("/feedback", feedbackHandler);
+app.use("/auth", authHandler)
 
 logger.info("routes added");
 
