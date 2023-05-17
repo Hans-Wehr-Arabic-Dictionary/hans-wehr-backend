@@ -2,11 +2,11 @@ import { MongoClient } from "mongodb";
 import { logger } from "./logger";
 import dotenv from "dotenv";
 import { Db } from 'mongodb';
+import { Feedback } from "../routes/feedback";
 
 
 dotenv.config();
 
-const LOCAL = process.env.LOCAL || 0;
 const LOCAL_DB = process.env.LOCAL_DB || 0;
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
@@ -43,7 +43,7 @@ export async function lookupRoot(root: string) {
   return collection.find({ root: root }).hint("rootsIndex");
 }
 
-export async function insertFeedback(feedback: any) {
+export async function insertFeedback(feedback: Feedback) {
   let collection = db.collection("feedback");
   let name = null;
   let email = null;
@@ -56,5 +56,17 @@ export async function insertFeedback(feedback: any) {
     email = feedback["email"];
   }
 
-  return collection.insertOne({ "name": feedback["name"], "email": email, "root": feedback["root"], "message": feedback["message"] })
+  return collection.insertOne({ "name": feedback["name"], "email": email, "root": feedback["root"], "message": feedback["message"], "created" : new Date()})
+}
+
+export async function getRecentFeeedback() {
+  let collection = db.collection("feedback");
+  return collection.find().sort({created: -1}).toArray();
+}
+
+
+export async function getFeedbackByRoot(search: string) {
+  console.log(search);
+  let collection = db.collection("feedback");
+  return collection.find({root: search}).sort({created: -1}).toArray();
 }
