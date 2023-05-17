@@ -3,23 +3,28 @@ import { logger } from "../utils/logger";
 import { getFeedbackByRoot, getRecentFeeedback, insertFeedback } from "../utils/db";
 
 export interface Feedback {
+  type: string;
   name: string | undefined;
   email: string | undefined;
   root: string;
-  message: string;
+  message: string | undefined;
 }
 
 export const router = express.Router();
 
 router.post("/", (req: Request, res: Response) => {
   const body: Feedback = req.body
-  if(!("root" in body)) {
+  if (!("root" in body)) {
     logger.info("Recieved bad feedback request");
     res.status(400).send("Sorry, there is no root field");
-  } else if(!("message" in body)) {
+  } else if (!("message" in body)) {
     logger.info("Recieved bad feedback request");
     res.status(400).send("Sorry, there is no message field");
-  } else {
+  } else if (!("type" in body)) {
+    logger.info("Recieved bad feedback request");
+    res.status(400).send("Sorry, there is no message field");
+  }
+  else {
     logger.info("Recieved feedback request", body["message"]);
     insertFeedback(body);
     res.send("Thank you for your feedback, it has been processed");

@@ -47,6 +47,11 @@ export async function insertFeedback(feedback: Feedback) {
   let collection = db.collection("feedback");
   let name = null;
   let email = null;
+  let type = null;
+
+  if ("type" in feedback) {
+    type = feedback["type"]
+  }
 
   if ("name" in feedback) {
     name = feedback["name"];
@@ -56,17 +61,17 @@ export async function insertFeedback(feedback: Feedback) {
     email = feedback["email"];
   }
 
-  return collection.insertOne({ "name": feedback["name"], "email": email, "root": feedback["root"], "message": feedback["message"], "created" : new Date()})
+  return collection.insertOne({ "type": feedback["type"], "name": feedback["name"], "email": email, "root": feedback["root"], "message": feedback["message"], "created": new Date() })
 }
 
 export async function getRecentFeeedback() {
   let collection = db.collection("feedback");
-  return collection.find().sort({created: -1}).toArray();
+  return collection.find().sort({ created: -1 }).toArray();
 }
 
 
 export async function getFeedbackByRoot(search: string) {
   console.log(search);
   let collection = db.collection("feedback");
-  return collection.find({root: search}).sort({created: -1}).toArray();
+  return collection.find({ root: search }).sort({ created: -1 }).toArray();
 }
