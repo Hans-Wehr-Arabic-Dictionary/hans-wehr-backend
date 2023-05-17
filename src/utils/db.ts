@@ -58,3 +58,40 @@ export async function insertFeedback(feedback: any) {
 
   return collection.insertOne({ "name": feedback["name"], "email": email, "root": feedback["root"], "message": feedback["message"] })
 }
+
+export interface User {
+  username: string;
+  password: string;
+  // Add other properties if needed
+}
+
+export async function lookupUsername(username: string) {
+  // connect to the collection
+  let collection = db.collection("admin_users");
+
+  return collection.findOne({ 'username': username }).then((user) => {
+    console.log(`USER: ${user}`)
+    return user;
+  })
+}
+
+type ErrorCallback = (error: Error | null) => void;
+
+export async function insertUser(username: string, hashedPassword: string, callback: ErrorCallback) {
+  // connect to the collection
+  let collection = db.collection("admin_users");
+
+  const newUser = {
+    username,
+    password: hashedPassword,
+  };
+
+  collection.insertOne(newUser)
+    .then(() => {
+      // Registration successful
+      return;
+    })
+    .catch((error) => {
+      callback(error)
+    });
+}
