@@ -1,8 +1,9 @@
 import unittest
 import requests
+import threading
 
 # Create a class that inherits from unittest.TestCase
-class MyTestCase(unittest.TestCase):
+class FeedbackCase(unittest.TestCase):
     url = 'http://localhost:8080/feedback'
 
     def test_full_req(self):
