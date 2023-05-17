@@ -1,7 +1,8 @@
 name: Build and push Docker image upon release
-on: push
-  branches:
-    - master
+on:
+  push:
+    branches:
+      - master
 
 # types: [published] # , created, edited
 
