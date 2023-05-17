@@ -18,6 +18,18 @@ class FeedbackCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.text, "Thank you for your feedback, it has been processed")
 
+    def test_diff_root(self):
+        body = {
+                    'name' : 'foo bar',
+                    'email' : 'foo@gmail.com',
+                    'root' : 'كتب',
+                    'message' : 'there is an issue with your form 11'
+                }
+
+        res = requests.post(self.url, json=body)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.text, "Thank you for your feedback, it has been processed")
+
     def test_partial_req(self):
         body = {
                     'root' : 'عمل',
