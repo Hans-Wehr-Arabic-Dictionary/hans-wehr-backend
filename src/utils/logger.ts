@@ -5,8 +5,8 @@ import { Loggly } from "winston-loggly-bulk";
 import TransportStream from 'winston-transport';
 import axios from 'axios';
 
-// const LOGGER_URL = 'https://logger.hanswehr.com/log'
-const LOGGER_URL = "http://localhost:80/log"
+const LOGGER_URL = 'https://logger.hanswehr.com/log'
+// const LOGGER_URL = "http://localhost:80/log"
 
 interface ApiTransportOptions {
   apiEndpoint: string;
