@@ -17,6 +17,7 @@
     "@aws-sdk/lib-dynamodb": "^3.297.0",
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.2",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -29,7 +30,8 @@
     "swagger-ui-express": "^4.6.2",
     "uuid": "^9.0.0",
     "vercel": "^28.16.15",
-    "winston-loggly-bulk": "^3.2.1"
+    "winston-loggly-bulk": "^3.2.1",
+    "winston-transport": "^4.5.0"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.329.0",

@@ -11,6 +11,7 @@ import { nounHandler } from "./routes/noun";
 import { feedbackHandler } from "./routes/feedback";
 import { specs } from "./utils/swagger-api";
 import { authHandler } from "./routes/auth";
+import { uptimeHandler } from "./routes/uptime";
 
 const app = express();
 
@@ -48,22 +49,24 @@ app.use("/root", rootHandler);
 app.use("/noun", nounHandler);
 app.use("/feedback", feedbackHandler);
 app.use("/auth", authHandler)
+app.use("/uptime", uptimeHandler)
 
-logger.info("routes added");
+// logger.info("routes added");
 
 initDB()
   .then((_database) => {
-    logger.info("Database Initialized");
+    logger.info("initialization: Database Initialized")
+    // logger.info("Database Initialized");
     startListening();
   })
   .catch((err) => {
-    logger.error("Error connecting to the database", err);
+    logger.error("db_connection: Error connecting to the database" + err);
   });
 
 function startListening() {
   if (LOCAL) {
     app.listen(PORT, () => {
-      logger.info(`API listening port ${PORT}...`);
+      logger.debug(`initialization: API listening port ${PORT}...`);
     });
   } else if (HTTP) {
     initializeHTTP();
@@ -80,7 +83,7 @@ function startListening() {
 function initializeHTTP() {
   const httpServer = http.createServer(app);
   httpServer.listen(80, () => {
-    console.log("HTTP Server running on port 80");
+    logger.debug("initialization: HTTP Server running on port 80")
   });
 }
 
@@ -92,22 +95,14 @@ function initializeHTTPS() {
   const HTTPS_CERT = fs.readFileSync(
     "fullchain.pem"
   )
-  // if (!HTTPS_CERT || !HTTPS_KEY) {
-  //   logger.error("Error: Missing HTTPS Credentials")
-  //   console.log("Error: Missing HTTPS Credentials")
-  //   throw new Error("Error: Missing HTTPS Credentials")
-  // }
+  if (!HTTPS_CERT || !HTTPS_KEY) {
+    logger.error("httpsError: Missing HTTPS Credentials")
+    // throw new Error("Error: Missing HTTPS Credentials")
+  }
 
-  console.log("About to create HTTPS server")
-  console.log("HTTPS KEY: " + HTTPS_KEY)
-  console.log("HTTPS CERT: " + HTTPS_CERT)
-
+  // try to create the HTTPS Server
   try {
     const httpsServer = https.createServer(
-      // {
-      //   key: HTTPS_KEY,
-      //   cert: HTTPS_CERT
-      // },
       {
         key: fs.readFileSync(
           "./privkey.pem"
@@ -119,16 +114,10 @@ function initializeHTTPS() {
       app
     );
 
-    console.log("Created HTTPS Server")
-
     httpsServer.listen(443, () => {
-      console.log("HTTPS Server running on port 443");
+      logger.debug("initialization: HTTPS Server running on port 443");
     });
   } catch (err) {
-    console.error(err);
+    logger.error(`httpsError: ${err}`)
   }
-
-
-
-
 }

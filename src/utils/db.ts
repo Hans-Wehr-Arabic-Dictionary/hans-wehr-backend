@@ -13,13 +13,13 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 const url = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@hans-wehr.ujhfadm.mongodb.net/`;
 
 if (!DB_USERNAME || !DB_PASSWORD) {
-  logger.error("Error: No DB Credentials");
+  logger.error("database: Error: No DB Credentials");
   throw new Error("Error: No DB Credentials found. Check the .env file");
 }
 
 // Database Name
 const dbName = LOCAL_DB ? "hans_wehr_dev" : "hans_wehr";
-logger.info("using database " + dbName)
+logger.info("database: using database " + dbName)
 
 
 let db: Db;
@@ -28,7 +28,7 @@ export async function initDB() {
   try {
     let client = await MongoClient.connect(url);
     db = client.db(dbName);
-    logger.info("Successfully connected to MongoDB");
+    logger.info("database: Successfully connected to MongoDB");
     return db;
   } catch (err) {
     logger.error(err);
