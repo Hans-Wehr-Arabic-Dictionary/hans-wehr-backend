@@ -33,10 +33,10 @@ app.use(
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-app.use((_req, _res, next) => {
-  console.log("Time:", Date.now());
-  next();
-});
+// app.use((_req, _res, next) => {
+//   console.log("Time:", Date.now());
+//   next();
+// });
 
 app.get("/", (_req, res) => {
   logger.info("Received GET Request to / endpoint");
