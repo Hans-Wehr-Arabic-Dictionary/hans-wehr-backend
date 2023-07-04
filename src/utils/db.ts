@@ -40,7 +40,7 @@ export async function lookupRoot(root: string) {
   let collection = db.collection("definitions");
 
   // perform the lookup
-  return collection.find({ root: root }).hint("rootsIndex");
+  return collection.find({ searchableRoots: root }).hint("searchableRootsIndex");
 }
 
 export async function insertFeedback(feedback: Feedback) {
