@@ -7,7 +7,7 @@ const RESPONSE_VERS = "1.0";
 // This is the router for the root route
 const router = express.Router();
 
-async function retrieveAllWordsWithRoot(root : string) {
+async function retrieveAllWordsWithRoot(root: string) {
   //   let collection = await db.collection("definitions");
 
   // perform the lookup
@@ -74,6 +74,7 @@ async function retrieveAllWordsWithRoot(root : string) {
 }
 
 // root lookup route
+// "appurl/root"
 router.get("/", (req, res) => {
   logger.debug("ROOT: ", JSON.stringify(req.query));
   if (!req.query.root) {
