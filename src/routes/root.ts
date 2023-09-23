@@ -4,6 +4,7 @@ import { lookupRoot } from "../utils/db";
 
 const RESPONSE_VERS = "1.0";
 
+
 // This is the router for the root route
 const router = express.Router();
 
