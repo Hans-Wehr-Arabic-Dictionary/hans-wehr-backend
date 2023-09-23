@@ -112,3 +112,21 @@ export async function insertUser(username: string, hashedPassword: string, callb
       callback(error)
     });
 }
+
+// Projection definition
+const bundleProjection = {
+  _id: 0,
+  'root': 1,
+  'forms.text': 1,
+  'forms.form': 1,
+  'forms.transliteration': 1,
+  'forms.translation.text': 1,
+  'nouns.text': 1,
+  'nouns.transliteration': 1,
+  'nouns.plural': 1,
+  'nouns.translation.text': 1
+};
+
+export async function bundleDB() {
+  let collection = db.collection("definitions");
+}
