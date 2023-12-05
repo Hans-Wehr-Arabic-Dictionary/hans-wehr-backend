@@ -8,6 +8,14 @@ dotenv.config();
 
 const EMAIL_USERNAME = process.env.EMAIL_USERNAME;
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
+
+logger.info(EMAIL_USERNAME)
+logger.info(EMAIL_PASSWORD)
+
+if (!EMAIL_USERNAME || !EMAIL_PASSWORD) {
+  logger.error("database: Error: No EMAIL Credentials");
+  throw new Error("Error: No Email Credentials found. Check the .env file");
+}
 const EMAIL_LIST = ["manaf.asif12@gmail.com"];
 
 export interface Feedback {

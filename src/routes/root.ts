@@ -77,7 +77,7 @@ async function retrieveAllWordsWithRoot(root: string) {
 // root lookup route
 // "appurl/root"
 router.get("/", (req, res) => {
-  logger.debug("ROOT: ", JSON.stringify(req.query));
+  // logger.debug("ROOT: ", JSON.stringify(req.query));
   if (!req.query.root) {
     return res.send(`No root provided`);
   }
@@ -86,7 +86,7 @@ router.get("/", (req, res) => {
     if (typeof data === "string") {
       return res.send(data);
     }
-    logger.log("info", `Looked up root ${req.query.root}`);
+    // logger.log("info", `Looked up root ${req.query.root}`);
     res.json({
       message: "success",
       data: data,
