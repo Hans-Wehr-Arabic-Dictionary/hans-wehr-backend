@@ -58,6 +58,8 @@ jobs:
             git pull origin master &&
             echo "DB_USERNAME=${{ secrets.API_DB_USERNAME  }}" > .env && 
             echo "DB_PASSWORD=${{ secrets.API_DB_PASSWORD  }}" >> .env &&
+            echo "EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME  }}" > .env && 
+            echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD  }}" >> .env &&
             echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY  }}" >> .env &&
             echo "${{ secrets.API_HTTPS_KEY  }}" > privkey.pem &&
             echo "${{ secrets.API_HTTPS_CERT  }}" > fullchain.pem &&
