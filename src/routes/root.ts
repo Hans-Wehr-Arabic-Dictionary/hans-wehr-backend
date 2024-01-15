@@ -17,14 +17,14 @@ async function retrieveAllWordsWithRoot(root: string) {
   let response = [];
 
   for await (const doc of results) {
-    console.log(doc);
+    // console.log(doc);
 
     let form_definitions = [];
 
     // process the forms
     for (let index in doc.forms) {
       const word = doc.forms[index];
-      console.log(JSON.stringify(word));
+      // console.log(JSON.stringify(word));
 
       const simplified_def = {
         id: word.id,

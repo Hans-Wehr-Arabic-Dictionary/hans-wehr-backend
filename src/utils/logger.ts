@@ -98,13 +98,15 @@ if (process.env.LOCAL === "1") {
       ),
     })
   );
+} else {
+  logger.add(
+    new ApiTransport({
+      apiEndpoint: LOGGER_URL
+    })
+  )
+
 }
 
-logger.add(
-  new ApiTransport({
-    apiEndpoint: LOGGER_URL
-  })
-)
 
 // if (true) {
 //   logger.add(

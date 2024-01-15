@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import { logger } from "./logger";
 import dotenv from "dotenv";
-import { Db } from 'mongodb';
+import { Db, Document } from 'mongodb';
 import { Feedback } from "../routes/feedback";
 
 
@@ -71,7 +71,7 @@ export async function getRecentFeeedback() {
 
 
 export async function getFeedbackByRoot(search: string) {
-  console.log(search);
+  // console.log(search);
   let collection = db.collection("feedback");
   return collection.find({ root: search }).sort({ created: -1 }).toArray();
 }
@@ -84,10 +84,10 @@ export interface User {
 
 export async function lookupUsername(username: string) {
   // connect to the collection
-  let collection = db.collection("admin_users");
+  let collection = db.collection("users");
 
   return collection.findOne({ 'username': username }).then((user) => {
-    console.log(`USER: ${user}`)
+    logger.debug(`Found USER: ${JSON.stringify(user)}`)
     return user;
   })
 }
@@ -96,12 +96,14 @@ type ErrorCallback = (error: Error | null) => void;
 
 export async function insertUser(username: string, hashedPassword: string, callback: ErrorCallback) {
   // connect to the collection
-  let collection = db.collection("admin_users");
+  let collection = db.collection("users");
 
   const newUser = {
     username,
     password: hashedPassword,
   };
+
+  // console.log("New user:", newUser)
 
   collection.insertOne(newUser)
     .then(() => {
@@ -111,4 +113,62 @@ export async function insertUser(username: string, hashedPassword: string, callb
     .catch((error) => {
       callback(error)
     });
+}
+
+export async function insertFlashcards(
+  username: string,
+  flashcards: {},
+  callback: ErrorCallback
+) {
+  try {
+    // Connect to the "users" collection
+    const collection = db.collection("users");
+
+    // Define the criteria to find the specific user by their username
+    const query = { username };
+
+    // Define the update operation to set the flashcards field with the new array
+    const update = {
+      $set: {
+        flashcards,
+      },
+    };
+
+    // Perform the update operation, updating only the flashcards field
+    await collection.updateOne(query, update);
+
+    // Flashcards replaced successfully
+    return;
+  } catch (error) {
+    callback(error);
+  }
+}
+
+export async function getFlashcardsForUser(
+  username: string,
+  callback: (error: Error | null, flashcards: {} | null) => void
+) {
+  try {
+    // Connect to the "users" collection
+    const collection = db.collection("users");
+
+    // Define the criteria to find the specific user by their username
+    const query = { username };
+
+    // Query the database to find the user's document
+    const userDocument: Document | null = await collection.findOne(query);
+
+    if (!userDocument) {
+      // User not found
+      return callback(new Error("User not found"), null);
+    }
+
+    // Extract the flashcards field from the user document
+    const flashcards: {} = userDocument.flashcards || {};
+
+    // Return the flashcards for the user
+    callback(null, flashcards);
+  } catch (error) {
+    callback(error, null);
+  }
 }

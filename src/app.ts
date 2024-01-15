@@ -12,6 +12,8 @@ import { feedbackHandler } from "./routes/feedback";
 import { specs } from "./utils/swagger-api";
 import { authHandler } from "./routes/auth";
 import { uptimeHandler } from "./routes/uptime";
+import { authenticateToken } from './routes/auth';
+import flashcardRouter from "./routes/flashcards";
 
 const app = express();
 
@@ -50,8 +52,14 @@ app.use("/noun", nounHandler);
 app.use("/feedback", feedbackHandler);
 app.use("/auth", authHandler)
 app.use("/uptime", uptimeHandler)
+app.use("/flashcards", flashcardRouter)
 
 // logger.info("routes added");
+
+app.use('/protected', authenticateToken, (req, res) => {
+  // Your protected route logic goes here
+  res.send('This route is protected.');
+});
 
 initDB()
   .then((_database) => {
@@ -72,7 +80,7 @@ function startListening() {
     initializeHTTP();
   }
   else {
-    console.log("Trying to run HTTP and HTTPS Server")
+    // console.log("Trying to run HTTP and HTTPS Server")
     initializeHTTP();
     initializeHTTPS();
 
