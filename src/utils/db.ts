@@ -94,13 +94,14 @@ export async function lookupUsername(username: string) {
 
 type ErrorCallback = (error: Error | null) => void;
 
-export async function insertUser(username: string, hashedPassword: string, callback: ErrorCallback) {
+export async function insertUser(username: string, hashedPassword: string, flashcards = {}, callback: ErrorCallback) {
   // connect to the collection
   let collection = db.collection("users");
 
   const newUser = {
     username,
     password: hashedPassword,
+    flashcards: flashcards
   };
 
   // console.log("New user:", newUser)

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { logger } from "../utils/logger";
-import { lookupUsername, insertUser, User } from "../utils/db";
+import { lookupUsername, insertUser, User, getFlashcardsForUser } from "../utils/db";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -24,7 +24,7 @@ interface MyJwtPayload extends JwtPayload {
 
 // Registration endpoint
 router.post('/register', async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { username, password, flashcards } = req.body;
     if (!username || !password) {
         res.status(400).send("Missing username or password in request");
         return;
@@ -45,10 +45,11 @@ router.post('/register', async (req: Request, res: Response) => {
             res.status(500).send('Internal server error');
             return;
         }
-        insertUser(username, hash, (err) => {
+        insertUser(username, hash, (flashcards ? flashcards : {}), (err) => {
             res.status(500).send('Internal server error');
         }).then(() => {
-            res.send({ status: "Successful", message: `${username} registered` });
+            const token = jwt.sign({ username }, SECRET_KEY);
+            res.send({ status: "Successful", message: `${username} registered`, token });
         });
     });
 });
@@ -101,7 +102,15 @@ router.post('/login', async (req: Request, res: Response) => {
 
             // Authentication successful
             logger.debug("successfully authenticated ", username)
-            res.json({ message: 'Authentication successful', token });
+
+            getFlashcardsForUser(username, (error, flashcards) => {
+                if (error) {
+                    return res.status(500).json({ message: "Internal server error" });
+                }
+                // Send the retrieved flashcards in the response
+                res.json({ message: 'Authentication successful', token, flashcards: flashcards });
+            });
+            // res.json({ message: 'Authentication successful', token });
         } else {
             // Authentication failed
             res.status(401).json({ message: 'Invalid username or password' });
