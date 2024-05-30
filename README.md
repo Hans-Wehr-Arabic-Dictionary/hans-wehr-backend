@@ -12,5 +12,3 @@ and you can run `yarn run deployDocker` to deploy without building
 # Running Test Suite 
 1. `python3 test/run_tests.py`
 
-
-
