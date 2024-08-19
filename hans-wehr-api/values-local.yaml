@@ -1,0 +1,48 @@
+parse_yaml: |
+  {{- define "parse_yaml" -}}
+  {{- $yaml := . }}
+  {{- $key := index .Args 0 }}
+  {{- $value := tuple $yaml $key | include "helm-toolkit.getValues" }}
+  {{- index $value $key }}
+  {{- end }}
+
+local: true
+
+replicaCount: 1
+
+image:
+  repository: manafasif/hans-wehr-backend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+
+serviceAccount:
+  create: true
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+env:
+  DB_USERNAME: "manafasif"
+  DB_PASSWORD: "YallaHabibi"
+  JWT_SECRET_KEY: "YallaHabibi"
+  EMAIL_USERNAME: "hanswehrdictionary@gmail.com"
+  EMAIL_PASSWORD: "YallaHabibi!"
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

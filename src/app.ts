@@ -56,6 +56,8 @@ app.use("/flashcards", flashcardRouter)
 
 // logger.info("routes added");
 
+console.log("test log")
+
 app.use('/protected', authenticateToken, (req, res) => {
   // Your protected route logic goes here
   res.send('This route is protected.');
@@ -74,13 +76,14 @@ initDB()
 function startListening() {
   if (LOCAL) {
     app.listen(PORT, () => {
-      logger.debug(`initialization: API listening port ${PORT}...`);
+      console.log(`initialization: API listening port ${PORT}...`);
     });
   } else if (HTTP) {
+    console.log("initializing HTTP")
     initializeHTTP();
   }
   else {
-    // console.log("Trying to run HTTP and HTTPS Server")
+    console.log("Trying to run HTTP and HTTPS Server")
     initializeHTTP();
     initializeHTTPS();
 

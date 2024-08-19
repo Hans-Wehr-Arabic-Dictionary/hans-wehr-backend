@@ -11,7 +11,7 @@
     "start": "cross-env LOCAL=1 node dist/app.js",
     "dev": "cross-env LOCAL=1 LOCAL_DB=1 nodemon src/app.ts",
     "dev_cloud_DB": "cross-env LOCAL=1 nodemon src/app.ts",
-    "buildDocker": "docker build -t hans-wehr-backend .",
+    "buildDocker": "docker build -t manafasif/hans-wehr-backend:latest .",
     "deployDocker": "docker-compose up",
     "docker": "npm run buildDocker && npm run deployDocker"
   },

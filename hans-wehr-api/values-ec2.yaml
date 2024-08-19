@@ -1,0 +1,35 @@
+local: false
+
+replicaCount: 1
+
+image:
+  repository: <your-dockerhub-username>/my-api-image
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: myapi.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - myapi.example.com
+      secretName: myapi-tls-secret
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
